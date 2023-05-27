@@ -4,89 +4,87 @@
 
 import 'dart:convert';
 
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
+List<Welcome> welcomeFromJson(String str) =>
+    List<Welcome>.from(json.decode(str).map((x) => Welcome.fromJson(x)));
 
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
+String welcomeToJson(List<Welcome> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Welcome {
-  final List<Movie>? movies;
+  List<Movie> movies;
 
   Welcome({
-    this.movies,
+    required this.movies,
   });
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        movies: json["movies"] == null
-            ? []
-            : List<Movie>.from(json["movies"]!.map((x) => Movie.fromJson(x))),
+        movies: List<Movie>.from(json["movies"]?.map((x) => Movie.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "movies": movies == null
-            ? []
-            : List<dynamic>.from(movies!.map((x) => x.toJson())),
+        "movies": List<dynamic>.from(movies.map((x) => x.toJson())),
       };
 }
 
 class Movie {
-  final int? id;
-  final List<String>? movieCode;
-  final String? titleEn;
-  final String? titleTh;
-  final Rating? rating;
-  final int? ratingId;
-  final int? duration;
-  final dynamic releaseDate;
-  final DateTime? sneakDate;
-  final String? synopsisTh;
-  final String? synopsisEn;
-  final String? director;
-  final String? actor;
-  final String? genre;
-  final String? posterOri;
-  final String? posterUrl;
-  final String? trailer;
-  final String? trIos;
-  final String? trHd;
-  final String? trSd;
-  final String? trMp4;
-  final String? priority;
-  final String? nowShowing;
-  final String? advanceTicket;
-  final DateTime? dateUpdate;
-  final String? showBuyticket;
-  final String? trailerCmsId;
-  final String? trailerIvxKey;
+  int id;
+  List<String>? movieCode;
+  String titleEn;
+  String titleTh;
+  Rating rating;
+  int ratingId;
+  int duration;
+  dynamic releaseDate;
+  DateTime sneakDate;
+  String synopsisTh;
+  String synopsisEn;
+  String director;
+  String actor;
+  String genre;
+  String posterOri;
+  String posterUrl;
+  String trailer;
+  String? trIos;
+  String? trHd;
+  String? trSd;
+  String trMp4;
+  String? priority;
+  String? nowShowing;
+  String? advanceTicket;
+  DateTime dateUpdate;
+  String? showBuyticket;
+  String trailerCmsId;
+  String trailerIvxKey;
 
   Movie({
-    this.id,
+    required this.id,
     this.movieCode,
-    this.titleEn,
-    this.titleTh,
-    this.rating,
-    this.ratingId,
-    this.duration,
-    this.releaseDate,
-    this.sneakDate,
-    this.synopsisTh,
-    this.synopsisEn,
-    this.director,
-    this.actor,
-    this.genre,
-    this.posterOri,
-    this.posterUrl,
-    this.trailer,
+    required this.titleEn,
+    required this.titleTh,
+    required this.rating,
+    required this.ratingId,
+    required this.duration,
+    required this.releaseDate,
+    required this.sneakDate,
+    required this.synopsisTh,
+    required this.synopsisEn,
+    required this.director,
+    required this.actor,
+    required this.genre,
+    required this.posterOri,
+    required this.posterUrl,
+    required this.trailer,
     this.trIos,
     this.trHd,
     this.trSd,
-    this.trMp4,
+    required this.trMp4,
     this.priority,
     this.nowShowing,
     this.advanceTicket,
-    this.dateUpdate,
+    required this.dateUpdate,
     this.showBuyticket,
-    this.trailerCmsId,
-    this.trailerIvxKey,
+    required this.trailerCmsId,
+    required this.trailerIvxKey,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
@@ -100,9 +98,7 @@ class Movie {
         ratingId: json["rating_id"],
         duration: json["duration"],
         releaseDate: json["release_date"],
-        sneakDate: json["sneak_date"] == null
-            ? null
-            : DateTime.parse(json["sneak_date"]),
+        sneakDate: DateTime.parse(json["sneak_date"]),
         synopsisTh: json["synopsis_th"],
         synopsisEn: json["synopsis_en"],
         director: json["director"],
@@ -118,9 +114,7 @@ class Movie {
         priority: json["priority"],
         nowShowing: json["now_showing"],
         advanceTicket: json["advance_ticket"],
-        dateUpdate: json["date_update"] == null
-            ? null
-            : DateTime.parse(json["date_update"]),
+        dateUpdate: DateTime.parse(json["date_update"]),
         showBuyticket: json["show_buyticket"],
         trailerCmsId: json["trailer_cms_id"],
         trailerIvxKey: json["trailer_ivx_key"],
@@ -138,7 +132,7 @@ class Movie {
         "duration": duration,
         "release_date": releaseDate,
         "sneak_date":
-            "${sneakDate!.year.toString().padLeft(4, '0')}-${sneakDate!.month.toString().padLeft(2, '0')}-${sneakDate!.day.toString().padLeft(2, '0')}",
+            "${sneakDate.year.toString().padLeft(4, '0')}-${sneakDate.month.toString().padLeft(2, '0')}-${sneakDate.day.toString().padLeft(2, '0')}",
         "synopsis_th": synopsisTh,
         "synopsis_en": synopsisEn,
         "director": director,
@@ -154,7 +148,7 @@ class Movie {
         "priority": priority,
         "now_showing": nowShowing,
         "advance_ticket": advanceTicket,
-        "date_update": dateUpdate?.toIso8601String(),
+        "date_update": dateUpdate.toIso8601String(),
         "show_buyticket": showBuyticket,
         "trailer_cms_id": trailerCmsId,
         "trailer_ivx_key": trailerIvxKey,
