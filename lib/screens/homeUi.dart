@@ -11,8 +11,6 @@ class HomeUi extends StatefulWidget {
 }
 
 class _HomeUiState extends State<HomeUi> {
-  var movies;
-
   @override
   void initState() {
     // ignore: todo
@@ -26,16 +24,18 @@ class _HomeUiState extends State<HomeUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FutureBuilder(
-          future: WebApiService().feed(),
-          builder: ((context, snapshot) {
-            if (snapshot.hasData == false) {
-              return const Text('Loading...');
-            }
-            return Column(
+        child: Center(
+          child: FutureBuilder(
+            future: WebApiService().feed(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData == false) {
+                return const CircularProgressIndicator();
+              }
+              final movie = snapshot.data;
+              return const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: TextField(
                       decoration: InputDecoration(
@@ -44,22 +44,10 @@ class _HomeUiState extends State<HomeUi> {
                       ),
                     ),
                   ),
-                  SingleChildScrollView(
-                    child: ListView.builder(
-                      itemCount: movies?.length,
-                      itemBuilder: (context, index) {
-                        return ListView(
-                          children: [
-                            Row(
-                              children: [Text(movies[index].titleEn)],
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                  )
-                ]);
-          }),
+                ],
+              );
+            }),
+          ),
         ),
       ),
     );

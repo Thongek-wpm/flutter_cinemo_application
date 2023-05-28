@@ -4,11 +4,9 @@
 
 import 'dart:convert';
 
-List<Welcome> welcomeFromJson(String str) =>
-    List<Welcome>.from(json.decode(str).map((x) => Welcome.fromJson(x)));
+Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
 
-String welcomeToJson(List<Welcome> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String welcomeToJson(Welcome data) => json.encode(data.toJson());
 
 class Welcome {
   List<Movie> movies;
@@ -18,8 +16,10 @@ class Welcome {
   });
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-        movies: List<Movie>.from(json["movies"]?.map((x) => Movie.fromJson(x))),
+        movies: List<Movie>.from(json["movies"].map((x) => Movie.fromJson(x))),
       );
+
+  get length => null;
 
   Map<String, dynamic> toJson() => {
         "movies": List<dynamic>.from(movies.map((x) => x.toJson())),
