@@ -88,6 +88,14 @@ class _HomeUiState extends State<HomeUi> {
                               ),
                             ),
                             Padding(
+                              padding: const EdgeInsets.only(top: 0.5),
+                              child: Text(
+                                movies.movies[index].titleTh,
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Text(
                                 movies.movies[index].releaseDate,
