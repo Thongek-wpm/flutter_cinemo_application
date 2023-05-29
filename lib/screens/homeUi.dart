@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cinemo_application/screens/viewUi.dart';
 import 'package:flutter_cinemo_application/src/api.dart';
 
 class HomeUi extends StatefulWidget {
@@ -11,12 +12,15 @@ class HomeUi extends StatefulWidget {
 }
 
 class _HomeUiState extends State<HomeUi> {
+  final TextEditingController _searchController = TextEditingController();
+  final List<String> movies = [];
+
   @override
   void initState() {
     // ignore: todo
-    // TODO: implement initState
+    // TODO: implement in
+    _searchController.dispose();
     WebApiService().feed();
-
     super.initState();
   }
 
@@ -33,10 +37,14 @@ class _HomeUiState extends State<HomeUi> {
             final movies = snapshot.data;
             return Scaffold(
               appBar: AppBar(
-                flexibleSpace: TextField(
-                  decoration: InputDecoration(
-                    icon: Icon(Icons.search),
-                    labelText: 'Movie Finder',
+                flexibleSpace: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (value) => _searchController,
+                    decoration: const InputDecoration(
+                      suffixIcon: Icon(Icons.search),
+                      labelText: 'Movie Finder',
+                    ),
                   ),
                 ),
                 backgroundColor: Colors.white,
@@ -90,7 +98,16 @@ class _HomeUiState extends State<HomeUi> {
                             Padding(
                               padding: const EdgeInsets.only(top: 30),
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ViewUi(
+                                        movies.movies[index],
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: const Row(
                                   children: [
                                     Text(
