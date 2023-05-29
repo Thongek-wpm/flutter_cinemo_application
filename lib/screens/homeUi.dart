@@ -28,7 +28,7 @@ class _HomeUiState extends State<HomeUi> {
           future: WebApiService().feed(),
           builder: ((context, snapshot) {
             if (snapshot.hasData == false) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
             final movies = snapshot.data;
             return Scaffold(
@@ -43,7 +43,7 @@ class _HomeUiState extends State<HomeUi> {
               ),
               body: ListView.builder(
                 itemCount: movies?.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) {
                   return Card(
                     child: Row(
                       children: [
@@ -84,6 +84,29 @@ class _HomeUiState extends State<HomeUi> {
                                 movies.movies[index].releaseDate,
                                 style: const TextStyle(
                                   fontSize: 10,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: TextButton(
+                                onPressed: () {},
+                                child: const Row(
+                                  children: [
+                                    Text(
+                                      'View more',
+                                      style: TextStyle(
+                                        fontSize: 10.50,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 10.50,
+                                      color: Colors.black,
+                                    )
+                                  ],
                                 ),
                               ),
                             )
