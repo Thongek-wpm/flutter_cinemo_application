@@ -24,31 +24,78 @@ class _HomeUiState extends State<HomeUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Center(
-          child: FutureBuilder(
-            future: WebApiService().feed(),
-            builder: ((context, snapshot) {
-              if (snapshot.hasData == false) {
-                return const CircularProgressIndicator();
-              }
-              final movie = snapshot.data;
-              return const Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.search),
-                        labelText: 'Movie Finder',
-                      ),
-                    ),
+        child: FutureBuilder(
+          future: WebApiService().feed(),
+          builder: ((context, snapshot) {
+            if (snapshot.hasData == false) {
+              return CircularProgressIndicator();
+            }
+            final movies = snapshot.data;
+            return Scaffold(
+              appBar: AppBar(
+                flexibleSpace: TextField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.search),
+                    labelText: 'Movie Finder',
                   ),
-                  Card(child: Column()),
-                ],
-              );
-            }),
-          ),
+                ),
+                backgroundColor: Colors.white,
+              ),
+              body: ListView.builder(
+                itemCount: movies?.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ClipRect(
+                            child: Image.network(
+                              movies!.movies[index].posterUrl,
+                              height: 140,
+                              width: 90,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                movies.movies[index].genre,
+                                style: const TextStyle(
+                                    fontSize: 6.50,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: Text(
+                                movies.movies[index].titleEn,
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                movies.movies[index].releaseDate,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          }),
         ),
       ),
     );

@@ -19,7 +19,7 @@ class Welcome {
         movies: List<Movie>.from(json["movies"].map((x) => Movie.fromJson(x))),
       );
 
-  get length => null;
+  get length => 135;
 
   Map<String, dynamic> toJson() => {
         "movies": List<dynamic>.from(movies.map((x) => x.toJson())),
