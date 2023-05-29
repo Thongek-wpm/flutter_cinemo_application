@@ -74,8 +74,9 @@ class _HomeUiState extends State<HomeUi> {
                               child: Text(
                                 movies.movies[index].genre,
                                 style: const TextStyle(
-                                    fontSize: 6.50,
-                                    fontWeight: FontWeight.bold),
+                                  fontSize: 6.50,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             Padding(
