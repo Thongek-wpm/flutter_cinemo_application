@@ -43,7 +43,7 @@ class _FavoritesUiState extends State<FavoritesUi> {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text(
-          'Favorites',
+          'Cinemo',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.black,
