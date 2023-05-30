@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cinemo_application/screens/viewUi.dart';
 import 'package:flutter_cinemo_application/src/api.dart';
 
+import 'package:dio/dio.dart';
+
 class HomeUi extends StatefulWidget {
   const HomeUi({super.key});
 
@@ -13,7 +15,7 @@ class HomeUi extends StatefulWidget {
 
 class _HomeUiState extends State<HomeUi> {
   final TextEditingController _searchController = TextEditingController();
-  final List<String> movies = [];
+  final Dio dio = Dio();
 
   @override
   void initState() {
@@ -36,19 +38,6 @@ class _HomeUiState extends State<HomeUi> {
             }
             final movies = snapshot.data;
             return Scaffold(
-              appBar: AppBar(
-                flexibleSpace: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    onChanged: (value) => _searchController,
-                    decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.search),
-                      labelText: 'Movie Finder',
-                    ),
-                  ),
-                ),
-                backgroundColor: Colors.white,
-              ),
               body: ListView.builder(
                 itemCount: movies?.length,
                 itemBuilder: (context, index) {

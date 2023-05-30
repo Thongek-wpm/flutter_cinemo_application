@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+
+import '../src/itemsFav.dart';
 
 class FavoireUi extends StatefulWidget {
   const FavoireUi({super.key});
@@ -8,22 +11,32 @@ class FavoireUi extends StatefulWidget {
 }
 
 class _FavoireUiState extends State<FavoireUi> {
+  Dio dio = Dio();
+
+  List<dynamic> favorites = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFavorites().then((data) {
+      setState(() {
+        favorites = data;
+      });
+    }).catchError((error) {
+      print(error);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            onChanged: (value) => '',
-            decoration: const InputDecoration(
-              suffixIcon: Icon(Icons.search),
-              labelText: 'Movie Favorite',
-            ),
-          ),
-        ),
-        backgroundColor: Colors.white,
-      ),
-    );
+    return Scaffold(  body: ListView.builder(
+        itemCount: favorites.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(favorites[index]['name']),
+            subtitle: Text(favorites[index]['description']),
+          );
+        },
+      ),);
   }
 }
