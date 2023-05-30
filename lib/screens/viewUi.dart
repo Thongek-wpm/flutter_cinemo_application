@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,34 +20,19 @@ class ViewUi extends StatefulWidget {
 
 class _ViewUiState extends State<ViewUi> {
   bool isFavorite = false;
-
-  @override
-  void initState() {
-    super.initState();
-    checkFavoriteStatus();
-  }
-
-  Future<void> checkFavoriteStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
-
-    setState(() {
-      isFavorite = favoriteMovies.contains(widget.movies.titleTh);
-    });
-  }
-
   Future<void> toggleFavorite() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
 
-    setState(() {
-      if (isFavorite) {
-        favoriteMovies.remove(widget.movies.titleEn);
-      } else {
+    if (isFavorite) {
+      favoriteMovies.remove(widget.movies.titleEn);
+      isFavorite = false;
+    } else {
+      if (!favoriteMovies.contains(widget.movies.titleEn)) {
         favoriteMovies.add(widget.movies.titleEn);
+        isFavorite = true;
       }
-      isFavorite = !isFavorite;
-    });
+    }
 
     await prefs.setStringList('favorite_movies', favoriteMovies);
   }
@@ -133,7 +120,7 @@ class _ViewUiState extends State<ViewUi> {
                           child: Text(
                             "Director : ",
                             style: TextStyle(
-                              fontSize: 11,
+                              fontSize: 6.50,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -143,7 +130,7 @@ class _ViewUiState extends State<ViewUi> {
                           child: Text(
                             widget.movies.director,
                             style: const TextStyle(
-                              fontSize: 11,
+                              fontSize: 6.50,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -175,12 +162,13 @@ class _ViewUiState extends State<ViewUi> {
                 child: ElevatedButton(
                   onPressed: toggleFavorite,
                   style: ElevatedButton.styleFrom(
+                    // ignore: deprecated_member_use
                     primary: isFavorite ? Colors.red : null,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.heartCirclePlus,
                         size: 15,
                       ),

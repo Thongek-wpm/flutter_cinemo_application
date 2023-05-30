@@ -11,4 +11,6 @@ class WebApiService {
     final movies = welcomeFromJson(jsonEncode(result.data));
     return movies;
   }
+
+  getMovies() {}
 }
