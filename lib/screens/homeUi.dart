@@ -1,13 +1,14 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
+import 'package:flutter_cinemo_application/screens/favoriteUi.dart';
 import 'package:flutter_cinemo_application/screens/viewUi.dart';
+
 import 'package:flutter_cinemo_application/src/api.dart';
 
 import 'package:dio/dio.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeUi extends StatefulWidget {
-  const HomeUi({super.key});
+  const HomeUi({Key? key}) : super(key: key);
 
   @override
   State<HomeUi> createState() => _HomeUiState();
@@ -19,8 +20,6 @@ class _HomeUiState extends State<HomeUi> {
 
   @override
   void initState() {
-    // ignore: todo
-    // TODO: implement in
     _searchController.dispose();
     WebApiService().feed();
     super.initState();
@@ -29,10 +28,39 @@ class _HomeUiState extends State<HomeUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Cinemo',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritesUi()),
+              );
+              if (result != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('$result added to favorites'),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(
+              FontAwesomeIcons.heart,
+              color: Colors.pink,
+            ),
+          ),
+        ],
+        backgroundColor: Colors.black,
+      ),
       body: Center(
         child: FutureBuilder(
           future: WebApiService().feed(),
-          builder: ((context, snapshot) {
+          builder: (context, snapshot) {
             if (snapshot.hasData == false) {
               return const CircularProgressIndicator();
             }
@@ -102,6 +130,7 @@ class _HomeUiState extends State<HomeUi> {
                                     MaterialPageRoute(
                                       builder: (context) => ViewUi(
                                         movies.movies[index],
+                                        key: UniqueKey(),
                                       ),
                                     ),
                                   );
@@ -133,7 +162,7 @@ class _HomeUiState extends State<HomeUi> {
                 },
               ),
             );
-          }),
+          },
         ),
       ),
     );

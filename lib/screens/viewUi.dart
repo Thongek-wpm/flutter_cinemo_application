@@ -1,13 +1,54 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:flutter_cinemo_application/src/feed.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Dio dio = Dio();
+// ignore: unused_import
+import 'favoriteUi.dart';
 
-class ViewUi extends StatelessWidget {
+class ViewUi extends StatefulWidget {
   final Movie movies;
-  const ViewUi(this.movies, {super.key});
+
+  const ViewUi(this.movies, {required Key key}) : super(key: key);
+
+  @override
+  _ViewUiState createState() => _ViewUiState();
+}
+
+class _ViewUiState extends State<ViewUi> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavoriteStatus();
+  }
+
+  Future<void> checkFavoriteStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
+
+    setState(() {
+      isFavorite = favoriteMovies.contains(widget.movies.titleTh);
+    });
+  }
+
+  Future<void> toggleFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
+
+    setState(() {
+      if (isFavorite) {
+        favoriteMovies.remove(widget.movies.titleEn);
+      } else {
+        favoriteMovies.add(widget.movies.titleEn);
+      }
+      isFavorite = !isFavorite;
+    });
+
+    await prefs.setStringList('favorite_movies', favoriteMovies);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +76,7 @@ class ViewUi extends StatelessWidget {
                   padding: const EdgeInsets.all(6.0),
                   child: ClipRect(
                     child: Image.network(
-                      movies.posterUrl,
+                      widget.movies.posterUrl,
                       height: 200,
                       width: 150,
                       fit: BoxFit.fill,
@@ -47,7 +88,7 @@ class ViewUi extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      movies.genre,
+                      widget.movies.genre,
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -57,7 +98,7 @@ class ViewUi extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        movies.titleEn,
+                        widget.movies.titleEn,
                         style: const TextStyle(
                           fontSize: 10.05,
                           fontWeight: FontWeight.bold,
@@ -67,7 +108,7 @@ class ViewUi extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 0.1),
                       child: Text(
-                        movies.titleTh,
+                        widget.movies.titleTh,
                         style: const TextStyle(
                           fontSize: 10.05,
                           fontWeight: FontWeight.bold,
@@ -77,7 +118,7 @@ class ViewUi extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        movies.releaseDate,
+                        widget.movies.releaseDate,
                         style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -100,7 +141,7 @@ class ViewUi extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            movies.director,
+                            widget.movies.director,
                             style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
@@ -110,7 +151,7 @@ class ViewUi extends StatelessWidget {
                       ],
                     ),
                   ],
-                )
+                ),
               ],
             ),
             Padding(
@@ -122,7 +163,7 @@ class ViewUi extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(movies.synopsisTh),
+                      child: Text(widget.movies.synopsisTh),
                     ),
                   ],
                 ),
@@ -132,8 +173,11 @@ class ViewUi extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 50),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Row(
+                  onPressed: toggleFavorite,
+                  style: ElevatedButton.styleFrom(
+                    primary: isFavorite ? Colors.red : null,
+                  ),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -141,14 +185,16 @@ class ViewUi extends StatelessWidget {
                         size: 15,
                       ),
                       Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Add To Favorite'),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(isFavorite
+                            ? 'Remove from Favorite'
+                            : 'Add To Favorite'),
                       )
                     ],
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

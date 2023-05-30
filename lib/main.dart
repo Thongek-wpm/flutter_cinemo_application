@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cinemo_application/widget/Bottembar.dart';
+import 'package:flutter_cinemo_application/screens/homeUi.dart';
 
 void main() {
   runApp(
-    const MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BottemBar(),
+      home: HomeUi(),
     ),
   );
 }
