@@ -13,4 +13,6 @@ class WebApiService {
   }
 
   getMovies() {}
+
+  searchMovies(String searchKeyword) {}
 }
