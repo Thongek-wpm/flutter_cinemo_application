@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cinemo_application/src/feed.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 Dio dio = Dio();
 
 class ViewUi extends StatelessWidget {
