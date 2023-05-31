@@ -1,18 +1,13 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_cinemo_application/src/feed.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// ignore: unused_import
-import 'favoriteUi.dart';
-
 class ViewUi extends StatefulWidget {
-  final Movie movies;
+  final Movie movie;
 
-  const ViewUi(this.movies, {required Key key}) : super(key: key);
+  const ViewUi({required this.movie});
 
   @override
   _ViewUiState createState() => _ViewUiState();
@@ -20,21 +15,37 @@ class ViewUi extends StatefulWidget {
 
 class _ViewUiState extends State<ViewUi> {
   bool isFavorite = false;
+
   Future<void> toggleFavorite() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
 
     if (isFavorite) {
-      favoriteMovies.remove(widget.movies.titleEn);
+      favoriteMovies.remove(widget.movie.titleEn);
       isFavorite = false;
     } else {
-      if (!favoriteMovies.contains(widget.movies.titleEn)) {
-        favoriteMovies.add(widget.movies.titleEn);
+      if (!favoriteMovies.contains(widget.movie.titleEn)) {
+        favoriteMovies.add(widget.movie.titleEn);
         isFavorite = true;
       }
     }
 
     await prefs.setStringList('favorite_movies', favoriteMovies);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavorite();
+  }
+
+  Future<void> checkFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
+
+    setState(() {
+      isFavorite = favoriteMovies.contains(widget.movie.titleEn);
+    });
   }
 
   @override
@@ -63,7 +74,7 @@ class _ViewUiState extends State<ViewUi> {
                   padding: const EdgeInsets.all(6.0),
                   child: ClipRect(
                     child: Image.network(
-                      widget.movies.posterUrl,
+                      widget.movie.posterUrl,
                       height: 200,
                       width: 150,
                       fit: BoxFit.fill,
@@ -75,7 +86,7 @@ class _ViewUiState extends State<ViewUi> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      widget.movies.genre,
+                      widget.movie.genre,
                       style: const TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -85,7 +96,7 @@ class _ViewUiState extends State<ViewUi> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        widget.movies.titleEn,
+                        widget.movie.titleEn,
                         style: const TextStyle(
                           fontSize: 10.05,
                           fontWeight: FontWeight.bold,
@@ -95,7 +106,7 @@ class _ViewUiState extends State<ViewUi> {
                     Padding(
                       padding: const EdgeInsets.only(top: 0.1),
                       child: Text(
-                        widget.movies.titleTh,
+                        widget.movie.titleTh,
                         style: const TextStyle(
                           fontSize: 10.05,
                           fontWeight: FontWeight.bold,
@@ -105,7 +116,7 @@ class _ViewUiState extends State<ViewUi> {
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Text(
-                        widget.movies.releaseDate,
+                        widget.movie.releaseDate,
                         style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
@@ -128,7 +139,7 @@ class _ViewUiState extends State<ViewUi> {
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
-                            widget.movies.director,
+                            widget.movie.director,
                             style: const TextStyle(
                               fontSize: 6.50,
                               fontWeight: FontWeight.bold,
@@ -150,7 +161,7 @@ class _ViewUiState extends State<ViewUi> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(widget.movies.synopsisTh),
+                      child: Text(widget.movie.synopsisTh),
                     ),
                   ],
                 ),
@@ -162,7 +173,6 @@ class _ViewUiState extends State<ViewUi> {
                 child: ElevatedButton(
                   onPressed: toggleFavorite,
                   style: ElevatedButton.styleFrom(
-                    // ignore: deprecated_member_use
                     primary: isFavorite ? Colors.red : null,
                   ),
                   child: Row(

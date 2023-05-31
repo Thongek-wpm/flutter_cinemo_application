@@ -35,19 +35,6 @@ class _FavoritesUiState extends State<FavoritesUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios),
-        ),
-        title: const Text(
-          'Cinemo',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.black,
-      ),
       body: ListView.builder(
         itemCount: favoriteMovies.length,
         itemBuilder: (context, index) {
@@ -57,7 +44,7 @@ class _FavoritesUiState extends State<FavoritesUi> {
               onPressed: () {
                 removeFavoriteMovie(favoriteMovies[index]);
               },
-              icon: Icon(Icons.remove_circle),
+              icon: const Icon(Icons.remove_circle),
             ),
           );
         },
