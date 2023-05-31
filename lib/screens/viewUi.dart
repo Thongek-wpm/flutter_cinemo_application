@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter_cinemo_application/src/feed.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -15,8 +14,15 @@ class ViewUi extends StatefulWidget {
 
 class _ViewUiState extends State<ViewUi> {
   bool isFavorite = false;
+  bool isToggling = false;
 
   Future<void> toggleFavorite() async {
+    if (isToggling) return;
+
+    setState(() {
+      isToggling = true;
+    });
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> favoriteMovies = prefs.getStringList('favorite_movies') ?? [];
 
@@ -31,6 +37,10 @@ class _ViewUiState extends State<ViewUi> {
     }
 
     await prefs.setStringList('favorite_movies', favoriteMovies);
+
+    setState(() {
+      isToggling = false;
+    });
   }
 
   @override
@@ -171,7 +181,7 @@ class _ViewUiState extends State<ViewUi> {
               padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 50),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: toggleFavorite,
+                  onPressed: isToggling ? null : toggleFavorite,
                   style: ElevatedButton.styleFrom(
                     primary: isFavorite ? Colors.red : null,
                   ),

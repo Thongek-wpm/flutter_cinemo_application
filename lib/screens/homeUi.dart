@@ -49,7 +49,7 @@ class _HomeUiState extends State<HomeUi> {
                 searchMovies(value);
               },
               decoration: const InputDecoration(
-                labelText: 'Search Movies',
+                labelText: 'Movies Fineder',
                 prefixIcon: Icon(Icons.search),
               ),
             ),
