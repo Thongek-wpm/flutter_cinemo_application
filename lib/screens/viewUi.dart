@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_cinemo_application/src/feed.dart';
@@ -6,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class ViewUi extends StatefulWidget {
   final Movie movie;
 
-  const ViewUi({required this.movie});
+  const ViewUi({super.key, required this.movie});
 
   @override
   _ViewUiState createState() => _ViewUiState();
